@@ -61,7 +61,7 @@ def MLC_CFP(x, gamma, sr=44100, hop_size=None, window_size=7938, med_num=25, spa
     spec = np.abs(raw_stft) ** 2
 
     # get filter index
-    hpi = np.where(f > 27.5)[0][0] + 1  # 27.5 hz
+    hpi = np.where(f > 27.5)[0][0]  # 27.5 hz
     lpi = int(0.00024 / (1 / sr)) + 1  # 0.24 ms
 
     # perform MLC
