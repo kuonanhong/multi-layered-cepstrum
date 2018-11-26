@@ -5,7 +5,11 @@ Source code of the paper [Multi-Layered Cepstrum for Instantaneous Frequency Est
 ## Requirements
 * Numpy
 * Scipy
-* Pypianoroll (visualization when running bach10.py)
+
+For the bach10 example:
+* Librosa (file IO)
+* Matplotlib (visualization)
+* Pypianoroll (visualization)
 
 ## Quick Start
 
