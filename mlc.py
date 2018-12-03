@@ -38,10 +38,10 @@ def _pitch_fusion(upcp, upcpa, ratio):
     nonzero_upcp = upcp > 0
     nonzero_upcpa = upcpa > 0
     upcp_stacked = np.stack((nonzero_upcp[i:i + 88] for i in range(25)), 0)
-    upcpa_stacked = np.stack((nonzero_upcpa[i:i + 88] for i in range(25)), 0)
+    upcpa_stacked = np.stack((nonzero_upcpa[i:i + 88] for i in range(24, -1, -1)), 0)
 
     upcp_f0 = upcp_stacked[har].all(0)
-    upcpa_f0 = upcpa_stacked[24 - har].all(0)
+    upcpa_f0 = upcpa_stacked[har].all(0)
 
     sparsity_upcp = upcp_stacked.mean(0)
     sparsity_upcpa = upcpa_stacked.mean(0)
