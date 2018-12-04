@@ -75,9 +75,11 @@ class MLC_CFP(nn.Module):
         self.filter_size = torch.Size([112, window_size])
 
     @torch.no_grad()
-    def forward(self, x):
+    def forward(self, x=None, spec=None):
         # channels last style spectrum
-        spec = torch.stft(x, self.win_size, self.hop_size, window=self.window, onesided=False).pow_(2).sum(2).t()
+        if spec is None:
+            spec = torch.stft(x, self.win_size, self.hop_size, window=self.window, onesided=False).pow_(2).sum(2)
+        spec = spec.t()
         ceps = None
         for num, g in enumerate(self.gamma):
             if num % 2:
@@ -92,9 +94,9 @@ class MLC_CFP(nn.Module):
         ceps, spec = _peak_picking(ceps).float(), _peak_picking(spec).float()
 
         # back to channel first style
-        ppt = _pitch_profile(ceps.t(), self.filter_t_idx, self.filter_t_value, self.filter_size) > 0
-        ppf = _pitch_profile(spec.t(), self.filter_f_idx, self.filter_f_value, self.filter_size) > 0
+        ppt = _pitch_profile(ceps.t(), self.filter_t_idx, self.filter_t_value, self.filter_size)
+        ppf = _pitch_profile(spec.t(), self.filter_f_idx, self.filter_f_value, self.filter_size)
 
-        final = _pitch_fusion(ppt, ppf, self.harms, self.sp_ratio)
+        final = _pitch_fusion(ppt > 0, ppf > 0, self.harms, self.sp_ratio)
         final = _medfilt(final, self.med_num)
         return final, torch.arange(final.size(0)).float() * self.hop_size / self.sr

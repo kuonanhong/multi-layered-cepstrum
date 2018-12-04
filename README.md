@@ -25,3 +25,10 @@ Time cost: 5.6769 seconds
 Precision: 0.7661, Recall: 0.9170, F-score:, 0.8348
 ```
 ![](images/bach10_1.png)
+
+
+## Torch
+
+We also implement a faster version using PyTorch as `torch_bach10.py`, and it can run roughly 2 times faster on CPU.
+Add `--cuda` can further utilize computational resources on GPU.
+
